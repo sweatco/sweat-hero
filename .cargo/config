@@ -1,0 +1,12 @@
+[profile.contract]
+inherits = "release"
+strip = true
+codegen-units = 1
+opt-level = "z"
+
+#helloo
+
+lto = true
+debug = false
+panic = "abort"
+overflow-checks = true
