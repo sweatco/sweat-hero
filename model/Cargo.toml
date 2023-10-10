@@ -8,6 +8,7 @@ edition = "2021"
 name = "model"
 
 [dependencies]
+near-sdk = { workspace = true }
 anyhow = { workspace = true }
 async-trait = { workspace = true }
 integration-trait = { workspace = true }

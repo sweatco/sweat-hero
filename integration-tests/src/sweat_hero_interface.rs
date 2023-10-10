@@ -1,5 +1,6 @@
 use async_trait::async_trait;
 use model::SweatHeroInterfaceIntegration;
+use near_sdk::AccountId;
 use serde_json::json;
 use workspaces::Contract;
 
@@ -11,57 +12,13 @@ pub struct SweatHero<'a> {
 
 #[async_trait]
 impl SweatHeroInterfaceIntegration for SweatHero<'_> {
-    async fn init(&self) -> anyhow::Result<()>
-    where
-        Self: Sized,
-    {
+    async fn new(&self, owner_id: AccountId) -> anyhow::Result<()> {
         println!("▶️ Init contract");
 
-        self.contract.call("init").max_gas().transact().await?.into_result()?;
-
-        Ok(())
-    }
-
-    async fn initialize_with_name(&self, name: String) -> anyhow::Result<()>
-    where
-        Self: Sized,
-    {
-        println!("▶️ Init contract with name");
-
         self.contract
-            .call("init_with_name")
+            .call("new")
             .args_json(json!({
-                "name": name,
-            }))
-            .max_gas()
-            .transact()
-            .await?
-            .into_result()?;
-
-        Ok(())
-    }
-
-    async fn receive_name(&self) -> anyhow::Result<String> {
-        println!("▶️ Init contract with name");
-
-        let result = self
-            .contract
-            .call("receive_name")
-            .max_gas()
-            .transact()
-            .await?
-            .into_result()?;
-
-        Ok(result.json()?)
-    }
-
-    async fn set_name(&mut self, name: String) -> anyhow::Result<()> {
-        println!("▶️ Init contract with name");
-
-        self.contract
-            .call("set_name")
-            .args_json(json!({
-                "name": name,
+                "owner_id": owner_id,
             }))
             .max_gas()
             .transact()

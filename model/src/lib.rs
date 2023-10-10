@@ -1,15 +1,9 @@
 use integration_trait::make_integration_version;
+use near_sdk::AccountId;
+
+pub type TokenId = String;
 
 #[make_integration_version]
 pub trait SweatHeroInterface {
-    fn init() -> Self
-    where
-        Self: Sized;
-
-    fn initialize_with_name(name: String) -> Self
-    where
-        Self: Sized;
-
-    fn receive_name(&self) -> String;
-    fn set_name(&mut self, name: String);
+    fn new(owner_id: AccountId) -> Self;
 }
