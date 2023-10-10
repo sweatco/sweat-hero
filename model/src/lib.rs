@@ -1,7 +1,7 @@
 use integration_trait::make_integration_version;
 
 #[make_integration_version]
-pub trait ContractNameInterface {
+pub trait SweatHeroInterface {
     fn init() -> Self
     where
         Self: Sized;

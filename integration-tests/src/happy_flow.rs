@@ -1,6 +1,6 @@
 #[tokio::test]
 async fn happy_flow() -> anyhow::Result<()> {
-    use model::ContractNameInterfaceIntegration;
+    use model::SweatHeroInterfaceIntegration;
 
     use crate::prepare::{prepare_contract, IntegrationContracts};
 
@@ -8,11 +8,11 @@ async fn happy_flow() -> anyhow::Result<()> {
 
     let context = prepare_contract().await?;
 
-    assert_eq!(context.contract_name().receive_name().await?, "Default name");
+    assert_eq!(context.sweat_hero().receive_name().await?, "Default name");
 
-    context.contract_name().set_name("New name".to_string()).await?;
+    context.sweat_hero().set_name("New name".to_string()).await?;
 
-    assert_eq!(context.contract_name().receive_name().await?, "New name");
+    assert_eq!(context.sweat_hero().receive_name().await?, "New name");
 
     Ok(())
 }

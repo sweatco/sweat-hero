@@ -1,4 +1,4 @@
-use model::ContractNameInterface;
+use model::SweatHeroInterface;
 use near_sdk::{
     borsh::{self, BorshDeserialize, BorshSerialize},
     near_bindgen,
@@ -14,7 +14,7 @@ pub struct Contract {
 }
 
 #[near_bindgen]
-impl ContractNameInterface for Contract {
+impl SweatHeroInterface for Contract {
     #[init]
     #[must_use]
     fn init() -> Self {

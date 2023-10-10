@@ -1,14 +1,16 @@
 use async_trait::async_trait;
-use model::ContractNameInterfaceIntegration;
+use model::SweatHeroInterfaceIntegration;
 use serde_json::json;
 use workspaces::Contract;
 
-pub struct ContractName<'a> {
+pub const SWEAT_HERO: &str = "sweat_hero";
+
+pub struct SweatHero<'a> {
     pub contract: &'a Contract,
 }
 
 #[async_trait]
-impl ContractNameInterfaceIntegration for ContractName<'_> {
+impl SweatHeroInterfaceIntegration for SweatHero<'_> {
     async fn init(&self) -> anyhow::Result<()>
     where
         Self: Sized,
