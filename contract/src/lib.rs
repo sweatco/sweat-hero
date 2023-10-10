@@ -1,39 +1,4 @@
-use model::SweatHeroInterface;
-use near_sdk::{
-    borsh::{self, BorshDeserialize, BorshSerialize},
-    near_bindgen,
-    serde::Serialize,
-    PanicOnDefault,
-};
+pub mod api;
+pub mod contract;
 
-#[near_bindgen]
-#[derive(BorshDeserialize, BorshSerialize, Serialize, PanicOnDefault)]
-#[serde(crate = "near_sdk::serde")]
-pub struct Contract {
-    pub name: String,
-}
-
-#[near_bindgen]
-impl SweatHeroInterface for Contract {
-    #[init]
-    #[must_use]
-    fn init() -> Self {
-        Self {
-            name: "Default name".to_string(),
-        }
-    }
-
-    #[init]
-    #[must_use]
-    fn initialize_with_name(name: String) -> Self {
-        Self { name }
-    }
-
-    fn receive_name(&self) -> String {
-        self.name.clone()
-    }
-
-    fn set_name(&mut self, name: String) {
-        self.name = name;
-    }
-}
+use crate::contract::{Contract, ContractExt};
