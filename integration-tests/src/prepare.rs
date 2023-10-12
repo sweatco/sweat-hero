@@ -7,7 +7,7 @@ use crate::sweat_hero_interface::{SweatHero, SWEAT_HERO};
 pub type Context = integration_utils::context::Context<workspaces::network::Sandbox>;
 
 #[async_trait]
-pub trait IntegrationContracts {
+pub trait IntegrationContext {
     async fn account_with_name(&mut self, name: &str) -> anyhow::Result<AccountId>;
     async fn manager(&mut self) -> anyhow::Result<AccountId>;
     async fn alice(&mut self) -> anyhow::Result<AccountId>;
@@ -15,7 +15,7 @@ pub trait IntegrationContracts {
 }
 
 #[async_trait]
-impl IntegrationContracts for Context {
+impl IntegrationContext for Context {
     async fn account_with_name(&mut self, name: &str) -> anyhow::Result<AccountId> {
         let account = self.account(name).await?;
         Ok(AccountId::new_unchecked(account.id().to_string()))

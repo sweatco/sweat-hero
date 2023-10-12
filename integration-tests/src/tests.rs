@@ -2,7 +2,7 @@
 
 use model::{token_metadata::TokenMetadata, SweatHeroInterfaceIntegration, NAME, SPEC, SYMBOL};
 
-use crate::prepare::{prepare_contract, IntegrationContracts};
+use crate::prepare::{prepare_contract, IntegrationContext};
 
 #[tokio::test]
 async fn initialize() -> anyhow::Result<()> {
