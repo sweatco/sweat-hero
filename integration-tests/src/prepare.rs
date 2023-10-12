@@ -1,9 +1,10 @@
 use async_trait::async_trait;
-use integration_utils::context::Context;
 use model::SweatHeroInterfaceIntegration;
 use near_sdk::AccountId;
 
 use crate::sweat_hero_interface::{SweatHero, SWEAT_HERO};
+
+pub type Context = integration_utils::context::Context<workspaces::network::Sandbox>;
 
 #[async_trait]
 pub trait IntegrationContracts {
