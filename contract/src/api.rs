@@ -71,4 +71,22 @@ impl SweatHeroInterface for Contract {
             .get(&token_id)
             .map(|token| TokenView::from_token(token, token_id))
     }
+
+    fn nft_tokens_for_owner(
+        &self,
+        account_id: AccountId,
+        from_index: Option<usize>,
+        limit: Option<usize>,
+    ) -> Vec<TokenView> {
+        let Some(tokens) = self.tokens_per_owner.get(&account_id) else {
+            return vec![];
+        };
+
+        tokens
+            .iter()
+            .skip(from_index.unwrap_or(0))
+            .take(limit.unwrap_or(50))
+            .map(|token_id| self.nft_token(token_id.clone()).unwrap())
+            .collect()
+    }
 }

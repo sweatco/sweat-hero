@@ -45,7 +45,13 @@ async fn mint() -> anyhow::Result<()> {
     assert_eq!(token_view.metadata.title, "Cool legs");
     assert_eq!(token_view.metadata.description, "Very very cool legs");
 
-    dbg!(&token_view);
+    let all_tokens = context.sweat_hero().nft_tokens_for_owner(alice, None, None).await?;
+
+    assert_eq!(all_tokens.len(), 1);
+
+    let token_for_owner = all_tokens.into_iter().next().unwrap();
+
+    assert_eq!(token_view, token_for_owner);
 
     Ok(())
 }

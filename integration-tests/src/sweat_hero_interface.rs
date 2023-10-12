@@ -84,4 +84,28 @@ impl SweatHeroInterfaceIntegration for SweatHero<'_> {
 
         Ok(result.json()?)
     }
+
+    async fn nft_tokens_for_owner(
+        &self,
+        account_id: AccountId,
+        from_index: Option<usize>,
+        limit: Option<usize>,
+    ) -> anyhow::Result<Vec<TokenView>> {
+        println!("▶️ nft_tokens_for_owner");
+
+        let result = self
+            .contract
+            .call("nft_tokens_for_owner")
+            .args_json(json!({
+                "account_id": account_id,
+                "from_index": from_index,
+                "limit": limit,
+            }))
+            .max_gas()
+            .transact()
+            .await?
+            .into_result()?;
+
+        Ok(result.json()?)
+    }
 }

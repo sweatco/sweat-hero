@@ -20,4 +20,10 @@ pub trait SweatHeroInterface {
     fn nft_metadata(&self) -> ContractMetadata;
     fn nft_mint(&mut self, token_id: TokenId, metadata: TokenMetadata, receiver_id: AccountId);
     fn nft_token(&self, token_id: TokenId) -> Option<TokenView>;
+    fn nft_tokens_for_owner(
+        &self,
+        account_id: AccountId,
+        offset: Option<usize>,
+        limit: Option<usize>,
+    ) -> Vec<TokenView>;
 }
