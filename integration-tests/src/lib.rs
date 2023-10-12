@@ -1,3 +1,3 @@
-mod sweat_hero_interface;
-mod happy_flow;
 pub mod prepare;
+mod sweat_hero_interface;
+mod tests;

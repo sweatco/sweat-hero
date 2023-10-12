@@ -1,12 +1,22 @@
-use model::TokenId;
+use model::{contract_metadata::ContractMetadata, TokenId};
 use near_sdk::{
     borsh,
     borsh::{BorshDeserialize, BorshSerialize},
-    collections::{LazyOption, LookupMap, UnorderedMap, UnorderedSet},
-    near_bindgen, AccountId, PanicOnDefault,
+    collections::LazyOption,
+    near_bindgen,
+    store::{LookupMap, UnorderedMap, UnorderedSet},
+    AccountId, BorshStorageKey, PanicOnDefault,
 };
 
-use crate::{contract_metadata::ContractMetadata, token::Token, token_metadata::TokenMetadata};
+use crate::{token::Token, token_metadata::TokenMetadata};
+
+#[derive(BorshStorageKey, BorshSerialize)]
+pub(crate) enum StorageKey {
+    TokensPerOwner,
+    TokensById,
+    TokenMetadataById,
+    Metadata,
+}
 
 #[near_bindgen]
 #[derive(BorshDeserialize, BorshSerialize, PanicOnDefault)]

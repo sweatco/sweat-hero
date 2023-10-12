@@ -1,5 +1,5 @@
 use async_trait::async_trait;
-use model::SweatHeroInterfaceIntegration;
+use model::{contract_metadata::ContractMetadata, SweatHeroInterfaceIntegration};
 use near_sdk::AccountId;
 use serde_json::json;
 use workspaces::Contract;
@@ -26,5 +26,19 @@ impl SweatHeroInterfaceIntegration for SweatHero<'_> {
             .into_result()?;
 
         Ok(())
+    }
+
+    async fn nft_metadata(&self) -> anyhow::Result<ContractMetadata> {
+        println!("▶️ nft_metadata");
+
+        let result = self
+            .contract
+            .call("nft_metadata")
+            .max_gas()
+            .transact()
+            .await?
+            .into_result()?;
+
+        Ok(result.json()?)
     }
 }

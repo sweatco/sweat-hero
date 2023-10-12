@@ -5,7 +5,7 @@ use near_sdk::{
     serde::{Deserialize, Serialize},
 };
 
-#[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone)]
+#[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Debug, Clone)]
 #[serde(crate = "near_sdk::serde")]
 pub struct ContractMetadata {
     pub spec: String,                        // required, essentially a version like "nft-1.0.0"
