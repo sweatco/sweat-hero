@@ -8,6 +8,7 @@ use crate::sweat_hero_interface::{SweatHero, SWEAT_HERO};
 #[async_trait]
 pub trait IntegrationContracts {
     async fn manager(&mut self) -> anyhow::Result<AccountId>;
+    async fn alice(&mut self) -> anyhow::Result<AccountId>;
     fn sweat_hero(&self) -> SweatHero;
 }
 
@@ -15,6 +16,11 @@ pub trait IntegrationContracts {
 impl IntegrationContracts for Context {
     async fn manager(&mut self) -> anyhow::Result<AccountId> {
         let account = self.account("manager").await?;
+        Ok(AccountId::new_unchecked(account.id().to_string()))
+    }
+
+    async fn alice(&mut self) -> anyhow::Result<AccountId> {
+        let account = self.account("alice").await?;
         Ok(AccountId::new_unchecked(account.id().to_string()))
     }
 

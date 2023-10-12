@@ -5,11 +5,11 @@ use near_sdk::{
     serde::{Deserialize, Serialize},
 };
 
-#[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize)]
+#[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone, Debug)]
 #[serde(crate = "near_sdk::serde")]
 pub struct TokenMetadata {
-    pub title: Option<String>,               // ex. "Arch Nemesis: Mail Carrier" or "Parcel #5055"
-    pub description: Option<String>,         // free-form description
+    pub title: String,                   // ex. "Arch Nemesis: Mail Carrier" or "Parcel #5055"
+    pub description: String,             // free-form description
     pub media: Option<String>, // URL to associated media, preferably to decentralized, content-addressed storage
     pub media_hash: Option<Base64VecU8>, // Base64-encoded sha256 hash of content referenced by the `media` field. Required if `media` is included.
     pub copies: Option<u64>,             // number of copies of this set of metadata in existence when token was minted.
@@ -18,6 +18,21 @@ pub struct TokenMetadata {
     pub starts_at: Option<u64>,          // When token starts being valid, Unix epoch in milliseconds
     pub updated_at: Option<u64>,         // When token was last updated, Unix epoch in milliseconds
     pub extra: Option<String>,           // anything extra the NFT wants to store on-chain. Can be stringified JSON.
-    pub reference: Option<String>,       // URL to an off-chain JSON file with more info.
-    pub reference_hash: Option<Base64VecU8>, // Base64-encoded sha256 hash of JSON from reference field. Required if `reference` is included.
+}
+
+impl TokenMetadata {
+    pub fn new(title: &str, description: &str) -> Self {
+        Self {
+            title: title.to_string(),
+            description: description.to_string(),
+            media: None,
+            media_hash: None,
+            copies: None,
+            issued_at: None,
+            expires_at: None,
+            starts_at: None,
+            updated_at: None,
+            extra: None,
+        }
+    }
 }

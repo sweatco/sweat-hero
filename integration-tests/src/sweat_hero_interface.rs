@@ -1,5 +1,8 @@
 use async_trait::async_trait;
-use model::{contract_metadata::ContractMetadata, SweatHeroInterfaceIntegration};
+use model::{
+    contract_metadata::ContractMetadata, token_metadata::TokenMetadata, token_view::TokenView,
+    SweatHeroInterfaceIntegration, TokenId,
+};
 use near_sdk::AccountId;
 use serde_json::json;
 use workspaces::Contract;
@@ -34,6 +37,46 @@ impl SweatHeroInterfaceIntegration for SweatHero<'_> {
         let result = self
             .contract
             .call("nft_metadata")
+            .max_gas()
+            .transact()
+            .await?
+            .into_result()?;
+
+        Ok(result.json()?)
+    }
+
+    async fn nft_mint(
+        &mut self,
+        token_id: TokenId,
+        metadata: TokenMetadata,
+        receiver_id: AccountId,
+    ) -> anyhow::Result<()> {
+        println!("▶️ nft_mint");
+
+        self.contract
+            .call("nft_mint")
+            .args_json(json!({
+                "token_id": token_id,
+                "metadata": metadata,
+                "receiver_id": receiver_id,
+            }))
+            .max_gas()
+            .transact()
+            .await?
+            .into_result()?;
+
+        Ok(())
+    }
+
+    async fn nft_token(&self, token_id: TokenId) -> anyhow::Result<Option<TokenView>> {
+        println!("▶️ nft_token");
+
+        let result = self
+            .contract
+            .call("nft_token")
+            .args_json(json!({
+                "token_id": token_id,
+            }))
             .max_gas()
             .transact()
             .await?
