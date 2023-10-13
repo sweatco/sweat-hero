@@ -1,5 +1,10 @@
 use model::{
-    contract_metadata::ContractMetadata, token::Token, token_metadata::TokenMetadata, token_view::TokenView,
+    contract_metadata::ContractMetadata,
+    legs::legs_metadata::LegsMetadata,
+    token::Token,
+    token_metadata::TokenMetadata,
+    token_view::TokenView,
+    utils::{FromStringOrPanic, ToStringOrPanic},
     SweatHeroInterface, TokenId, NAME, SPEC, SYMBOL,
 };
 use near_sdk::{collections::LazyOption, env, near_bindgen, store::LookupMap, AccountId};
@@ -39,13 +44,19 @@ impl SweatHeroInterface for Contract {
     }
 
     #[payable]
-    fn nft_mint(&mut self, token_id: TokenId, metadata: TokenMetadata, receiver_id: AccountId) {
+    fn nft_mint(
+        &mut self,
+        token_id: TokenId,
+        metadata: TokenMetadata,
+        legs_metadata: LegsMetadata,
+        receiver_id: AccountId,
+    ) {
         //measure the initial storage being used on the contract
         let initial_storage_usage = env::storage_usage();
 
         let token = Token {
             owner_id: receiver_id.clone(),
-            metadata,
+            metadata: metadata.with_extra(legs_metadata.to_string()),
         };
 
         //insert the token ID and token struct and make sure that the token doesn't exist
@@ -88,5 +99,11 @@ impl SweatHeroInterface for Contract {
             .take(limit.unwrap_or(50))
             .map(|token_id| self.nft_token(token_id.clone()).unwrap())
             .collect()
+    }
+
+    fn legs_metadata(&self, token_id: TokenId) -> Option<LegsMetadata> {
+        self.tokens_by_id
+            .get(&token_id)
+            .map(|token| LegsMetadata::from_string(&token.metadata.extra))
     }
 }

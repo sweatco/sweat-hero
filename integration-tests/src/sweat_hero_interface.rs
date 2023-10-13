@@ -2,8 +2,8 @@ use std::mem::{size_of, MaybeUninit};
 
 use async_trait::async_trait;
 use model::{
-    contract_metadata::ContractMetadata, token_metadata::TokenMetadata, token_view::TokenView,
-    SweatHeroInterfaceIntegration, TokenId,
+    contract_metadata::ContractMetadata, legs::legs_metadata::LegsMetadata, token_metadata::TokenMetadata,
+    token_view::TokenView, SweatHeroInterfaceIntegration, TokenId,
 };
 use near_sdk::{
     serde::{de::DeserializeOwned, Serialize},
@@ -62,6 +62,7 @@ impl SweatHeroInterfaceIntegration for SweatHero<'_> {
         &mut self,
         token_id: TokenId,
         metadata: TokenMetadata,
+        legs_metadata: LegsMetadata,
         receiver_id: AccountId,
     ) -> anyhow::Result<()> {
         self.call_contract(
@@ -69,6 +70,7 @@ impl SweatHeroInterfaceIntegration for SweatHero<'_> {
             json!({
                  "token_id": token_id,
                 "metadata": metadata,
+                "legs_metadata": legs_metadata,
                 "receiver_id": receiver_id,
             }),
         )
@@ -97,6 +99,16 @@ impl SweatHeroInterfaceIntegration for SweatHero<'_> {
                 "account_id": account_id,
                 "from_index": from_index,
                 "limit": limit,
+            }),
+        )
+        .await
+    }
+
+    async fn legs_metadata(&self, token_id: TokenId) -> anyhow::Result<Option<LegsMetadata>> {
+        self.call_contract(
+            "legs_metadata",
+            json!({
+                "token_id": token_id,
             }),
         )
         .await

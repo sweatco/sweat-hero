@@ -1,6 +1,8 @@
 #![cfg(test)]
 
-use model::{token_metadata::TokenMetadata, SweatHeroInterfaceIntegration, NAME, SPEC, SYMBOL};
+use model::{
+    legs::legs_metadata::LegsMetadata, token_metadata::TokenMetadata, SweatHeroInterfaceIntegration, NAME, SPEC, SYMBOL,
+};
 
 use crate::prepare::{prepare_contract, IntegrationContext};
 
@@ -29,11 +31,14 @@ async fn mint() -> anyhow::Result<()> {
 
     let token_id = "aaaa";
 
+    let legs_metadata = LegsMetadata::new_test();
+
     context
         .sweat_hero()
         .nft_mint(
             token_id.to_string(),
             TokenMetadata::new("Cool legs", "Very very cool legs"),
+            legs_metadata.clone(),
             alice.clone(),
         )
         .await?;
@@ -52,6 +57,10 @@ async fn mint() -> anyhow::Result<()> {
     let token_for_owner = all_tokens.into_iter().next().unwrap();
 
     assert_eq!(token_view, token_for_owner);
+
+    let legs = context.sweat_hero().legs_metadata(token_id.to_string()).await?.unwrap();
+
+    assert_eq!(legs, legs_metadata);
 
     Ok(())
 }
